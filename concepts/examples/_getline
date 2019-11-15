@@ -1,0 +1,13 @@
+Reads a line from stream, delimited by the newline character.
+The delimiter character is included as part of the line, unless the end of the
+file is reached.
+
+- The first thing getline does is allocate memory if necessary.
+- The second thing getline does is update the size variable.
+- The third thing getline does is read the line of the file and stores it into the string.
+- The fourth thing getline does is return length of that string. 
+
+Returns: The number of characters written, excluding the terminating NUL character. The value -1 is returned
+if an error occurs, or if end-of-file is reached.
+
+Proto: ssize_t getline(char **lineptr, size_t *linecapp, FILE *stream);
