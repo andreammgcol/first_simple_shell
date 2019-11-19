@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 
-int count_delimiters(char *str, char *delim);
+int count_words(char *str, char *delim);
 char **splits_string(char *str, char *delim, int c_words);
 
 /**
@@ -22,15 +22,19 @@ int main(void)
 	{
 		write(STDOUT_FILENO, "$ ", 2);
 		len = getline(&line, &sz, stdin);
-		c_words = count_delimiters(line, " ") + 1;
+		c_words = count_words(line, " ");
+
+		printf("Qty of words: %d\n", c_words);
+
 		prints = splits_string(line, " ", c_words);
 
-		while (i < c_words)
+		while (prints[i])
 		{
 			printf("Value of prints: %s\n", prints[i]);
 			i++;
 		}
-
+		
+		i = 0;
 		write(STDOUT_FILENO, line, len);
 	}
 
@@ -39,18 +43,30 @@ int main(void)
 	return (0);
 }
 
-int count_delimiters(char *str, char *delim)
+int count_words(char *str, char *delim)
 {
-	int i = 0, cd = 0;
+	int cw = 0, k = 0;
 
-	while (str[i])
+	while (str[k])
 	{
-		if (str[i] == delim[0])
-			cd++;
-		i++;
+		if (str[k] == '\n')
+			break;
+
+		if (str[k] == delim[0])
+			k++;
+		else
+		{
+			cw++;
+			while (str[k] != delim[0])
+			{
+				if (!str[k])
+					break;
+				k++;
+			}
+		}
 	}
 
-	return (cd);
+	return (cw);
 }
 
 /**
@@ -63,11 +79,11 @@ char **splits_string(char *str, char *delim, int c_words)
 	char **words, *token, *buffer;
 	int i = 0, aux = 0;
 
-	buffer = malloc(sizeof(str));
+	buffer = malloc(sizeof(char) * (strlen(str) + 1));
 	if (!buffer)
 		return (NULL);
 
-	words = malloc(sizeof(char *) * c_words);
+	words = malloc(sizeof(char *) * (c_words + 1));
 	if (!words)
 		return (NULL);
 
@@ -91,7 +107,8 @@ char **splits_string(char *str, char *delim, int c_words)
 		i++;
 	}
 
+	words[i] = NULL;
+
 	free(buffer);
 	return (words);
 }
-
