@@ -8,7 +8,7 @@
 int main(int argc, char *argv[], char *envp[])
 {
 	char *line = NULL, **a_words, **p_words, *path_env;
-	int c_words = 0, c_path = 0, k = 0, s = 0, prog_len = 0, path_len = 0, ex = 0, x = 0;
+	int c_words = 0, c_path = 0, k = 0, s = 0, prog_len = 0, path_len = 0, ex = 0;
 	size_t size = 0;
 	ssize_t len_line = 0;
 	pid_t child;
@@ -44,28 +44,27 @@ int main(int argc, char *argv[], char *envp[])
 			c_path = count_words(path_env, ":");
 			p_words = splits_string(path_env, ":", c_path);
 			prog_len = strlen(a_words[0]);
-			x = 0;
-			while (p_words[x])
+			s = 0;
+			while (p_words[s])
 			{
-				printf("Estoy iterando sobre %s\n", p_words[x]);
-				path_len = strlen(p_words[x]) + 2;
-				p_words[x] = realloc(p_words[x], sizeof(char) * (prog_len + path_len));
-				if (!p_words[x])
+				path_len = strlen(p_words[s]) + 2;
+				p_words[s] = realloc(p_words[s], sizeof(char) * (prog_len + path_len));
+				if (!p_words[s])
 					return (-1);
-				strcat(p_words[x], "/");
-				strcat(p_words[x], a_words[0]);
+				strcat(p_words[s], "/");
+				strcat(p_words[s], a_words[0]);
 
-				if (stat(p_words[x], &sb) == 0)
+				if (stat(p_words[s], &sb) == 0)
 				{
 					ex = 1;
 					a_words[0] = realloc(a_words[0], sizeof(char) * (prog_len + path_len));
 					if (!a_words[0])
 						return (-1);
-					strcpy(a_words[0], p_words[x]);
+					strcpy(a_words[0], p_words[s]);
 					break;
 				}
 
-				x++;
+				s++;
 			}
 		}
 
