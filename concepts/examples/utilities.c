@@ -9,8 +9,19 @@
   */
 int count_words(char *str, char *delim)
 {
-	int cw = 0, k = 0;
+	int cw = 0, k = 0, j = 0;
 
+	if (delim[0] == ':')
+	{
+		while (str[j])
+		{
+			if (str[j] == delim[0])
+				cw++;
+			j++;
+		}
+		return (cw);
+	}
+	
 	while (str[k])
 	{
 		if (str[k] == '\n')

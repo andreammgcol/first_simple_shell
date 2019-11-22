@@ -5,13 +5,26 @@
   *
   * Return: Always zero
   */
-int main(void)
+int main(int argc, char *argv[], char *envp[])
 {
-	char *line = NULL, **a_words;
-	int c_words = 0, k = 0;
+	char *line = NULL, **a_words, **p_words, *path_env;
+	int c_words = 0, c_path = 0, k = 0, s = 0, prog_len = 0, path_len = 0, ex = 0, x = 0;
 	size_t size = 0;
 	ssize_t len_line = 0;
 	pid_t child;
+	struct stat sb;
+
+	(void) argc, (void) argv;
+
+	while (envp[s])
+	{
+		if (!strncmp("PATH", envp[s], 4))
+		{
+			path_env = envp[s] + 5;
+			break;
+		}
+		s++;
+	}
 
 	while (len_line >= 0)
 	{
@@ -22,20 +35,56 @@ int main(void)
 		c_words = count_words(line, " ");
 		a_words = splits_string(line, " ", c_words);
 
-		switch (child = fork())
+		if (stat(a_words[0], &sb) == 0)
 		{
-			case -1:
-				perror("fork failed");
-				exit(-1);
-			/* En caso de que el PID sea el hijo */
-			case 0:
-				perform_task(a_words[0], a_words);
-			/* En caso de que el PID sea el padre */
-			default:
-				parent(child);
+			ex = 1;
+		}
+		else
+		{
+			c_path = count_words(path_env, ":");
+			p_words = splits_string(path_env, ":", c_path);
+			prog_len = strlen(a_words[0]);
+			x = 0;
+			while (p_words[x])
+			{
+				printf("Estoy iterando sobre %s\n", p_words[x]);
+				path_len = strlen(p_words[x]) + 2;
+				p_words[x] = realloc(p_words[x], sizeof(char) * (prog_len + path_len));
+				if (!p_words[x])
+					return (-1);
+				strcat(p_words[x], "/");
+				strcat(p_words[x], a_words[0]);
+
+				if (stat(p_words[x], &sb) == 0)
+				{
+					ex = 1;
+					a_words[0] = realloc(a_words[0], sizeof(char) * (prog_len + path_len));
+					if (!a_words[0])
+						return (-1);
+					strcpy(a_words[0], p_words[x]);
+					break;
+				}
+
+				x++;
+			}
 		}
 
-		write(STDOUT_FILENO, line, len_line);
+		if (ex == 1)
+		{
+			switch (child = fork())
+			{
+				case -1:
+					perror("fork failed");
+					exit(-1);
+				/* En caso de que el PID sea el hijo */
+				case 0:
+					perform_task(a_words[0], a_words);
+				/* En caso de que el PID sea el padre */
+				default:
+					parent(child);
+			}
+		}
+
 		write(STDOUT_FILENO, "\n", 1);
 
 		for (k = c_words; k >= 0; k--)
@@ -56,16 +105,15 @@ int main(void)
   */
 void parent(pid_t child)
 {
-	printf("PAPA (%lu) - Mi hijo es (%lu)\n", (long) getpid(), (long) child);
+	int status;
 
-	wait(NULL);
-
-	printf("PAPA (%lu) - Mi hijo (%lu) ya termino\n", (long) getpid(), (long) child);
-	printf("PAPA (%lu) - Ya me voy a salir\n", (long) getpid());
+	do {
+		waitpid(child, &status, WUNTRACED);
+	} while (WIFEXITED(status) == 0 && WIFSIGNALED(status) == 0);
 }
 
 /**
-  * child - ...
+  * perform_task - ...
   * @command: The command to performs
   * @options: The options to the command
   *
@@ -73,9 +121,6 @@ void parent(pid_t child)
   */
 void perform_task(char *command, char **options)
 {
-	printf("HIJO (%lu) - Mi papa es (%lu)\n", (long) getpid(), (long) getppid());
-	printf("HIJO (%lu) - Ya me voy a salir\n", (long) getpid());
-	
 	execve(command, options, NULL);
 	perror("Error:");
 }

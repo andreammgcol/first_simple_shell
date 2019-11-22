@@ -9,15 +9,15 @@
   */
 int main(void)
 {
-	char str[] = "One love, one heart, one destiny Bob Marley";
+	char str[] = "/bin/ls -l:-a";
 	char *token;
 
-	token = strtok(str, " ");
+	token = strtok(str, ": ");
 
 	while (token)
 	{
 		printf("%s\n", token);
-		token = strtok(NULL, " ");
+		token = strtok(NULL, ": ");
 	}
 
 	return (0);
