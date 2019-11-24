@@ -22,5 +22,7 @@ char *_getenv(const char *name);
 int _strlen(char *s);
 int exec(char *cname, char **opts);
 void sig_handler(int signo);
+int execBuiltInCommands(char **u_tokns);
+void openHelp();
 
 #endif

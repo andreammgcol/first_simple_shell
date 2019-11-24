@@ -8,7 +8,7 @@
 int main(void)
 {
 	char *line = NULL, **u_tokns = NULL;
-	int i = 0;
+	int i = 0, execFlag = 0;
 	size_t line_size = 0;
 	ssize_t line_len = 0;
 
@@ -28,12 +28,16 @@ int main(void)
 		if (line[0] != '\n')
 		{
 			u_tokns = tokenize(line, " ", count_input(line, ' '));
-			u_tokns[0] = find_command(u_tokns[0]);
+			execFlag = execBuiltInCommands(u_tokns);
 
-			if (u_tokns[0])
-				exec(u_tokns[0], u_tokns);
-			else
-				perror("./hsh");
+			if(!execFlag) {
+				u_tokns[0] = find_command(u_tokns[0]);
+
+				if (u_tokns[0])
+					exec(u_tokns[0], u_tokns);
+				else
+					perror("./hsh");
+			}
 
 			for (i = count_input(line, ' '); i >= 0; i--)
 				free(u_tokns[i]);
