@@ -1,9 +1,8 @@
-#include <stdio.h>
 #include "shell.h"
 
 /**
   * count_delims - Counts the tokens from a string
-  * @str: The string 
+  * @str: The string
   * @del: The delimiter
   *
   * Return: The number of tokens in a string

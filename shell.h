@@ -2,6 +2,13 @@
 #define _SHELL_
 
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 
 extern char **environ;
 
@@ -13,7 +20,7 @@ int count_delims(char *str, char *del);
 int count_input(char *str, char del);
 char *_getenv(const char *name);
 int _strlen(char *s);
-void perform_task(char *command, char **options);
-void parent(pid_t child);
+int exec(char *cname, char **opts);
+void sig_handler(int signo);
 
 #endif
