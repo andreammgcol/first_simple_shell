@@ -13,14 +13,15 @@
 extern char **environ;
 
 char **tokenize(char *str, char *del, int len);
-char *find_command(char *pathname);
+char *find(char *pathname);
+int exec(char *cname, char **opts);
 char *concat_path(char *pathname, char *prog_name);
 char *remove_new_line(char *str);
-int count_delims(char *str, char *del);
 int count_input(char *str, char del);
-char *_getenv(const char *name);
+int count_delims(char *str, char *del);
+char *_strcat(char *dest, char *src);
 int _strlen(char *s);
-int exec(char *cname, char **opts);
-void sig_handler(int signo);
+char *_getenv(const char *name);
+void signal_handler(int signo);
 
 #endif

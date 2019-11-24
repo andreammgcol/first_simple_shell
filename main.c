@@ -14,7 +14,7 @@ int main(void)
 
 	while (line_len >= 0)
 	{
-		signal(SIGINT, sig_handler);
+		signal(SIGINT, signal_handler);
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "($) ", 4);
 		line_len = getline(&line, &line_size, stdin);
@@ -28,7 +28,7 @@ int main(void)
 		if (line[0] != '\n')
 		{
 			u_tokns = tokenize(line, " ", count_input(line, ' '));
-			u_tokns[0] = find_command(u_tokns[0]);
+			u_tokns[0] = find(u_tokns[0]);
 
 			if (u_tokns[0])
 				exec(u_tokns[0], u_tokns);
@@ -44,10 +44,4 @@ int main(void)
 
 	free(line);
 	return (0);
-}
-
-void sig_handler(int signo)
-{
-	if (signo == SIGINT)
-		write(STDOUT_FILENO, "\n($) ", 5);
 }
