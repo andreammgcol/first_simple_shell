@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
-  * count_words - Counts the words typed by the user
+  * count_input - Counts the words typed by the user
   * @str: The string that contains the words
   * @del: The delimiter that separates each word
   *

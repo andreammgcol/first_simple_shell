@@ -8,7 +8,7 @@
 int main(void)
 {
 	char *line = NULL, **u_tokns = NULL;
-	int i = 0, execFlag = 0;
+	int i = 0, w_len = 0, execFlag = 0;
 	size_t line_size = 0;
 	ssize_t line_len = 0;
 
@@ -25,13 +25,14 @@ int main(void)
 			break;
 		}
 
-		if (line[0] != '\n')
+		w_len = count_input(line, ' ');
+		if (line[0] != '\n' && w_len > 0)
 		{
-			u_tokns = tokenize(line, " ", count_input(line, ' '));
-			u_tokns[0] = find(u_tokns[0]);
+			u_tokns = tokenize(line, " ", w_len);
 			execFlag = execBuiltInCommands(u_tokns);
 
-			if(!execFlag) {
+			if (!execFlag)
+			{
 				u_tokns[0] = find(u_tokns[0]);
 
 				if (u_tokns[0])
@@ -40,7 +41,7 @@ int main(void)
 					perror("./hsh");
 			}
 
-			for (i = count_input(line, ' '); i >= 0; i--)
+			for (i = w_len; i >= 0; i--)
 				free(u_tokns[i]);
 
 			free(u_tokns);

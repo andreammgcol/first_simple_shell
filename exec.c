@@ -7,18 +7,18 @@
   *
   * Return: The path name concatenated with the program name
   */
-char *concat_path(char *pathname, char *prog_name)
+char *concat_path(char *pathname, char *progname)
 {
 	int prog_len = 0, path_len = 0;
 
-	prog_len = _strlen(prog_name);
+	prog_len = _strlen(progname);
 	path_len = _strlen(pathname);
 	pathname = realloc(pathname, sizeof(char) * (path_len + prog_len + 2));
 	if (!pathname)
 		return (NULL);
 
 	_strcat(pathname, "/");
-	_strcat(pathname, prog_name);
+	_strcat(pathname, progname);
 
 	return (pathname);
 }
@@ -35,31 +35,34 @@ char *find(char *cname)
 	int i = 0, path_len = 0, num_del = 0;
 	struct stat sb;
 
-	if (stat(cname, &sb) == 0)
+	if (cname)
 	{
-		return (cname);
-	}
-	else
-	{
-		env_path = _getenv("PATH");
-		num_del = count_delims(env_path, ":") + 1;
-		p_tokns = tokenize(env_path, ":", num_del);
-
-		while (p_tokns[i])
+		if (stat(cname, &sb) == 0)
 		{
-			p_tokns[i] = concat_path(p_tokns[i], cname);
-			path_len = _strlen(p_tokns[i]);
+			return (cname);
+		}
+		else
+		{
+			env_path = _getenv("PATH");
+			num_del = count_delims(env_path, ":") + 1;
+			p_tokns = tokenize(env_path, ":", num_del);
 
-			if (stat(p_tokns[i], &sb) == 0)
+			while (p_tokns[i])
 			{
-				cname = realloc(cname, sizeof(char) * (path_len + 2));
-				if (!cname)
-					return (NULL);
-				cname = strdup(p_tokns[i]);
-				return (cname);
-			}
+				p_tokns[i] = concat_path(p_tokns[i], cname);
+				path_len = _strlen(p_tokns[i]);
 
-			i++;
+				if (stat(p_tokns[i], &sb) == 0)
+				{
+					cname = realloc(cname, sizeof(char) * (path_len + 2));
+					if (!cname)
+						return (NULL);
+					cname = strdup(p_tokns[i]);
+					return (cname);
+				}
+
+				i++;
+			}
 		}
 	}
 
@@ -69,7 +72,7 @@ char *find(char *cname)
 /**
   * exec - Executes a command
   * @cname: The command to execute
-  * @options: The options or flags to the command
+  * @opts: The options or flags to the command
   *
   * Return: A integer status value
   */
