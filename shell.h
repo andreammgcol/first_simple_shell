@@ -23,5 +23,7 @@ char *_strcat(char *dest, char *src);
 int _strlen(char *s);
 char *_getenv(const char *name);
 void signal_handler(int signo);
+int execBuiltInCommands(char **u_tokns);
+void openHelp(void);
 
 #endif
