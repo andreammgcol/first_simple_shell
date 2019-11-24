@@ -25,5 +25,6 @@ char *_getenv(const char *name);
 void signal_handler(int signo);
 int execBuiltInCommands(char **u_tokns);
 void openHelp(void);
+void print_env(void);
 
 #endif

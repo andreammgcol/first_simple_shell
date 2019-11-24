@@ -9,7 +9,7 @@
 int execBuiltInCommands(char **u_tokns)
 {
 	int i = 0;
-	char *ListBuiltinCmds[] = { "exit", "cd", "help", NULL };
+	char *ListBuiltinCmds[] = { "exit", "cd", "help", "env", NULL };
 
 	while (ListBuiltinCmds[i])
 	{
@@ -25,6 +25,8 @@ int execBuiltInCommands(char **u_tokns)
 				case 2:
 					openHelp();
 					return (1);
+				case 3:
+					print_env();
 				default:
 					break;
 			}
@@ -33,6 +35,22 @@ int execBuiltInCommands(char **u_tokns)
 	}
 
 	return (0);
+}
+
+/**
+  * print_env - Prints the environment built-in
+  *
+  * Return: Nothing to returns
+  */
+void print_env(void)
+{
+	int i = 0;
+
+	while (environ[i])
+	{
+		puts(environ[i]);
+		i++;
+	}
 }
 
 /**
