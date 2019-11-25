@@ -26,5 +26,7 @@ void signal_handler(int signo);
 int execBuiltInCommands(char **u_tokns);
 void openHelp(void);
 void print_env(void);
+void frees_get_env(char *env_path);
+void frees_tokens(char **tokns);
 
 #endif

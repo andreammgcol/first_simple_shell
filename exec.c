@@ -32,7 +32,7 @@ char *concat_path(char *pathname, char *progname)
 char *find(char *cname)
 {
 	char *env_path = NULL, **p_tokns = NULL;
-	int i = 0, path_len = 0, num_del = 0;
+	int i = 0, num_del = 0;
 	struct stat sb;
 
 	if (cname)
@@ -50,19 +50,20 @@ char *find(char *cname)
 			while (p_tokns[i])
 			{
 				p_tokns[i] = concat_path(p_tokns[i], cname);
-				path_len = _strlen(p_tokns[i]);
 
 				if (stat(p_tokns[i], &sb) == 0)
 				{
-					cname = realloc(cname, sizeof(char) * (path_len + 2));
-					if (!cname)
-						return (NULL);
 					cname = strdup(p_tokns[i]);
+					frees_get_env(env_path);
+					frees_tokens(p_tokns);
 					return (cname);
 				}
 
 				i++;
 			}
+
+			frees_get_env(env_path);
+			frees_tokens(p_tokns);
 		}
 	}
 
@@ -87,7 +88,7 @@ int exec(char *cname, char **opts)
 			perror("fork failed");
 			return (-1);
 		case 0:
-			execve(cname, opts, NULL);
+			execve(cname, opts, environ);
 		default:
 			do {
 				waitpid(child, &status, WUNTRACED);

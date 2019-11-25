@@ -8,7 +8,7 @@
 int main(void)
 {
 	char *line = NULL, **u_tokns = NULL;
-	int i = 0, w_len = 0, execFlag = 0;
+	int w_len = 0, execFlag = 0;
 	size_t line_size = 0;
 	ssize_t line_len = 0;
 
@@ -40,11 +40,8 @@ int main(void)
 				else
 					perror("./hsh");
 			}
-
-			for (i = w_len; i >= 0; i--)
-				free(u_tokns[i]);
-
-			free(u_tokns);
+			
+			frees_tokens(u_tokns);
 		}
 	}
 

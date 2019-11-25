@@ -23,16 +23,6 @@ char **tokenize(char *str, char *del, int len)
 
 	while (token)
 	{
-		tokens[i] = malloc(sizeof(char) * (_strlen(token) + 1));
-		if (!tokens[i])
-		{
-			for (; i >= 0; i--)
-				free(tokens[i]);
-
-			free(tokens);
-			return (NULL);
-		}
-
 		tokens[i] = strdup(token);
 		token = strtok(NULL, del);
 		i++;

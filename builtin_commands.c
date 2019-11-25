@@ -18,6 +18,7 @@ int execBuiltInCommands(char **u_tokns)
 			switch (i)
 			{
 				case 0:
+					frees_tokens(u_tokns);
 					exit(EXIT_SUCCESS);
 				case 1:
 					chdir(u_tokns[1]);
