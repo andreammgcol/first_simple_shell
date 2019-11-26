@@ -10,7 +10,7 @@
   */
 char **tokenize(char *str, char *del, int len)
 {
-	char **tokens, *token, *temp;
+	char **tokens = NULL, *token = NULL, *temp = NULL;
 	int i = 0;
 
 	tokens = malloc(sizeof(char *) * (len + 1));

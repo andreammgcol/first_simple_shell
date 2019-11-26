@@ -25,11 +25,11 @@ int main(void)
 			break;
 		}
 
-		w_len = count_input(line, ' ');
+		w_len = count_input(line);
 		if (line[0] != '\n' && w_len > 0)
 		{
-			u_tokns = tokenize(line, " ", w_len);
-			execFlag = execBuiltInCommands(u_tokns);
+			u_tokns = tokenize(line, " \t", w_len);
+			execFlag = execBuiltInCommands(u_tokns, line);
 
 			if (!execFlag)
 			{

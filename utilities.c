@@ -108,45 +108,34 @@ char *_strdup(char *str)
 }
 
 /**
-  * _realloc - ...
-  * @ptr: ...
-  * @old_size: ...
-  * @new_size: ...
-  *
-  * Return: ...
-  */
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
+ * _atoi - Convert a string to an integer.
+ * @s: The pointer to convert
+ *
+ * Return: A integer
+ */
+int _atoi(char *s)
 {
-	char *nptr;
-	unsigned int i;
+	int min = 1, isi = 0, pos = 0;
+	unsigned int ni = 0;
 
-	if (new_size == old_size)
-		return (ptr);
-
-	if (ptr == NULL)
+	while (s[pos])
 	{
-		nptr = malloc(new_size);
-		if (nptr == NULL)
-			return (NULL);
+		if (s[pos] == '-')
+			min *= -1;
 
-		return (nptr);
-	}
-	else
-	{
-		if (new_size == 0)
+		while (s[pos] >= '0' && s[pos] <= '9')
 		{
-			free(ptr);
-			return (NULL);
+			isi = 1;
+			ni = (ni * 10) + (s[pos] - '0');
+			pos++;
 		}
+
+		if (isi == 1)
+			break;
+
+		pos++;
 	}
 
-	nptr = malloc(new_size);
-	if (nptr == NULL)
-		return (NULL);
-
-	for (i = 0; i < old_size && i < new_size; i++)
-		nptr[i] = ((char *) ptr)[i];
-
-	free(ptr);
-	return (nptr);
+	ni *= min;
+	return (ni);
 }

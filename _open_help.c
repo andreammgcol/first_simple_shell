@@ -7,7 +7,7 @@
  */
 void _open_help(void)
 {
-	puts("\n***WELCOME TO THE SHELL HELP***"
+	_puts("\n***WELCOME TO THE SHELL HELP***"
 		"\nList of Commands supported:"
 		"\n>cd"
 		"\n>ls"

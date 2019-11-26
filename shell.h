@@ -20,7 +20,11 @@ char *find(char *pathname);
 int exec(char *cname, char **opts);
 char *concat_path(char *pathname, char *prog_name);
 char *remove_new_line(char *str);
-int count_input(char *str, char del);
+
+/**
+  * Counter functions
+  */
+int count_input(char *str);
 int count_delims(char *str, char *del);
 
 /**
@@ -31,15 +35,22 @@ int _strlen(const char *s);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *str);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+int _atoi(char *s);
+void _puts(char *str);
 
 char *_getenv(const char *name);
 void signal_handler(int signo);
-int execBuiltInCommands(char **u_tokns);
-void _open_help(void);
-void _print_env(void);
 
 /**
-  * Functions to frees memory leaks
+  * Built-ins functions
+  */
+int execBuiltInCommands(char **u_tokns, char *line);
+void _open_help(void);
+void _print_env(void);
+void _handle_exit(char **u_tokns, char *line);
+
+/**
+  * Frees functions
   */
 void frees_get_env(char *env_path);
 void frees_tokens(char **tokns);
