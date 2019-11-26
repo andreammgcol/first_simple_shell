@@ -30,7 +30,7 @@ char *_strcat(char *dest, char *src)
   *
   * Return: The length of a string
   */
-int _strlen(char *s)
+int _strlen(const char *s)
 {
 	int i = 0;
 
@@ -41,29 +41,112 @@ int _strlen(char *s)
 }
 
 /**
-  * _getenv - Gets an environment variable
-  * @name: The variable to find in the system environment
+  * _strcmp - Compares two strings
+  * @s1: The first string
+  * @s2: The second string
   *
-  * Return: The content of the environment variable
+  * Return: int value
   */
-char *_getenv(const char *name)
+int _strcmp(char *s1, char *s2)
 {
-	int i = 0;
-	char *env_var = NULL;
+	int len_s1 = 0, len_s2 = 0, pos = 0, diff = 0, lim = 0;
 
-	while (environ[i])
+	len_s1 = _strlen(s1);
+	len_s2 = _strlen(s2);
+
+	if (len_s1 <= len_s2)
+		lim = len_s1;
+	else
+		lim = len_s2;
+
+	while (pos <= lim)
 	{
-		if (!strncmp(name, environ[i], strlen(name)))
+		if (s1[pos] == s2[pos])
 		{
-			env_var = strdup(environ[i]);
-			while (*env_var != '=')
-				env_var++;
-
-			++env_var;
-			return (env_var);
+			pos++;
+			continue;
 		}
-		i++;
+		else
+		{
+			diff = s1[pos] - s2[pos];
+			break;
+		}
+
+		pos++;
 	}
 
-	return (NULL);
+	return (diff);
+}
+
+/**
+  * _strdup - Duplicate a string
+  * @str: the string to duplicate
+  *
+  * Return: the string duplicated
+  */
+char *_strdup(char *str)
+{
+	int idx = 0, len = 1;
+	char *dup_str;
+
+	if (str == NULL)
+		return (NULL);
+
+	len = _strlen(str);
+	dup_str = malloc((sizeof(char) * len) + 1);
+	if (dup_str == NULL)
+		return (NULL);
+
+	while (idx < len)
+	{
+		dup_str[idx] = str[idx];
+		idx++;
+	}
+
+	dup_str[idx] = '\0';
+	return (dup_str);
+}
+
+/**
+  * _realloc - ...
+  * @ptr: ...
+  * @old_size: ...
+  * @new_size: ...
+  *
+  * Return: ...
+  */
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
+{
+	char *nptr;
+	unsigned int i;
+
+	if (new_size == old_size)
+		return (ptr);
+
+	if (ptr == NULL)
+	{
+		nptr = malloc(new_size);
+		if (nptr == NULL)
+			return (NULL);
+
+		return (nptr);
+	}
+	else
+	{
+		if (new_size == 0)
+		{
+			free(ptr);
+			return (NULL);
+		}
+	}
+
+	nptr = malloc(new_size);
+	if (nptr == NULL)
+		return (NULL);
+
+	for (i = 0; i < old_size && i < new_size; i++)
+		nptr[i] = ((char *) ptr)[i];
+
+	free(ptr);
+	return (nptr);
 }

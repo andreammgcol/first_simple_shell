@@ -16,6 +16,12 @@ void frees_get_env(char *env_path)
 	free(env_path);
 }
 
+/**
+  * frees_tokens - ...
+  * @tokns: ...
+  *
+  * Return: Nothing to returns
+  */
 void frees_tokens(char **tokns)
 {
 	char **temp = tokns;

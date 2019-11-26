@@ -53,7 +53,8 @@ char *find(char *cname)
 
 				if (stat(p_tokns[i], &sb) == 0)
 				{
-					cname = strdup(p_tokns[i]);
+					free(cname);
+					cname = _strdup(p_tokns[i]);
 					frees_get_env(env_path);
 					frees_tokens(p_tokns);
 					return (cname);
@@ -62,6 +63,7 @@ char *find(char *cname)
 				i++;
 			}
 
+			free(cname);
 			frees_get_env(env_path);
 			frees_tokens(p_tokns);
 		}
@@ -89,6 +91,7 @@ int exec(char *cname, char **opts)
 			return (-1);
 		case 0:
 			execve(cname, opts, environ);
+			free(cname);
 		default:
 			do {
 				waitpid(child, &status, WUNTRACED);

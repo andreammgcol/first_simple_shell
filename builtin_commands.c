@@ -13,7 +13,7 @@ int execBuiltInCommands(char **u_tokns)
 
 	while (ListBuiltinCmds[i])
 	{
-		if (!strcmp(u_tokns[0], ListBuiltinCmds[i]))
+		if (_strcmp(u_tokns[0], ListBuiltinCmds[i]) == 0)
 		{
 			switch (i)
 			{
@@ -24,10 +24,10 @@ int execBuiltInCommands(char **u_tokns)
 					chdir(u_tokns[1]);
 					return (1);
 				case 2:
-					openHelp();
+					_open_help();
 					return (1);
 				case 3:
-					print_env();
+					_print_env();
 				default:
 					break;
 			}
@@ -36,36 +36,4 @@ int execBuiltInCommands(char **u_tokns)
 	}
 
 	return (0);
-}
-
-/**
-  * print_env - Prints the environment built-in
-  *
-  * Return: Nothing to returns
-  */
-void print_env(void)
-{
-	int i = 0;
-
-	while (environ[i])
-	{
-		puts(environ[i]);
-		i++;
-	}
-}
-
-/**
- * openHelp - Opens the Holberton Shell help
- *
- * Return: Nothing to returns
- */
-void openHelp(void)
-{
-	puts("\n***WELCOME TO THE SHELL HELP***"
-		"\nList of Commands supported:"
-		"\n>cd"
-		"\n>ls"
-		"\n>pwd"
-		"\n>cat"
-		"\n>exit");
 }

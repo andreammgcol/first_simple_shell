@@ -40,7 +40,7 @@ int main(void)
 				else
 					perror("./hsh");
 			}
-			
+
 			frees_tokens(u_tokns);
 		}
 	}

@@ -18,12 +18,12 @@ char **tokenize(char *str, char *del, int len)
 		return (NULL);
 
 	str = remove_new_line(str);
-	temp = strdup(str);
+	temp = _strdup(str);
 	token = strtok(temp, del);
 
 	while (token)
 	{
-		tokens[i] = strdup(token);
+		tokens[i] = _strdup(token);
 		token = strtok(NULL, del);
 		i++;
 	}
